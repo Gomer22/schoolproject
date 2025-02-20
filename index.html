@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Случайный обед</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+        #result { margin-top: 20px; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <h1>Генератор случайного обеда</h1>
+    <button onclick="generateLunch()">Получить обед</button>
+    <div id="result"></div>
+
+    <script>
+        const firstCourses = ["солянка по-ленинградски", "рассольник", "суп с фрикадельками", "суп с лапшой", "щи", "гороховый суп", "творожная запеканка"];
+        const sideDishes = ["картофельное пюре", "макароны", "рисовая каша", "гречневая каша", "пшеничная каша"];
+        const meats = ["сосиски варёные", "котлета говяжья", "котлета куриная", "котлета рыбная", "биток в яичной панировке"];
+        const salads = ["кукуруза консервированная", "салат с солёными огурцами и луком", "винегрет", "салат с капустой", "зелёный горошек консервированный"];
+        const drinks = ["Сок яблочный", "чай чёрный сладкий", "компот из сухофруктов", "компот яблочный", "какао"];
+        const extras = ["Пряники с фруктовой начинкой", "яйца варёные", "масло сливочное", "яблоки", ""];
+
+        function getRandomItem(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function generateLunch() {
+            let first, side, meat, salad, drink, extra;
+            
+            do {
+                first = getRandomItem(firstCourses);
+                side = getRandomItem(sideDishes);
+                meat = getRandomItem(meats);
+                salad = getRandomItem(salads);
+                drink = getRandomItem(drinks);
+                extra = getRandomItem(extras);
+            } while (
+                (first === "рассольник" && (drink === "Сок яблочный" || side === "творожная запеканка")) ||
+                (first === "гороховый суп" && meat === "котлета рыбная") ||
+                (side === "рисовая каша" && salad === "винегрет") ||
+                (drink === "какао" && first !== "творожная запеканка") ||
+                (first === "творожная запеканка" && !(side === "картофельное пюре" || side === "макароны") && meat !== "сосиски варёные") ||
+                (extra === "яйца варёные" && first !== "творожная запеканка")
+            );
+            
+            document.getElementById("result").innerHTML = `
+                <p><strong>Первое:</strong> ${first}</p>
+                <p><strong>Второе:</strong> ${side} + ${meat} + ${salad}</p>
+                <p><strong>Третье:</strong> ${drink}${extra ? ", " + extra : ""}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
